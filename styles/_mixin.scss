@@ -1,0 +1,102 @@
+@mixin flex_property($flex-direction, $align, $justify) {
+    display: flex;
+    @if $flex-direction != null {
+      flex-direction: $flex-direction;
+    }
+    @if $align != null {
+      align-items: $align;
+    }
+    @if $justify != null {
+      justify-content: $justify;
+    }
+  }
+  
+  @mixin response($breakpoint) {
+    @if $breakpoint == phone-min {
+      @media only screen and (max-width: 400px) {
+        @content;
+      } //400px
+    }
+    @if $breakpoint == phone-min-lg {
+      @media only screen and (max-width: 480px) {
+        @content;
+      } //480px
+    }
+    @if $breakpoint == phone {
+      @media only screen and (max-width: 37.5em) {
+        @content;
+      } //600px
+    }
+    @if $breakpoint == tab-port-min {
+      @media only screen and (max-width: 740px) {
+        @content;
+      } //740px
+    }
+    @if $breakpoint == tab-rewards-min {
+      @media only screen and (max-width: 850px) {
+        @content;
+      } //850px
+    }
+    // *****
+    @if $breakpoint == tab-port {
+      @media only screen and (max-width: 56.25em) {
+        @content;
+      } //900px
+    }
+    @if $breakpoint == tab-rewards {
+      @media only screen and (max-width: 1000px) {
+        @content;
+      } //1000px
+    }
+    // *****
+    @if $breakpoint == tab-land {
+      @media only screen and (max-width: 75em) {
+        @content;
+      } //1200px
+    }
+    @if $breakpoint == tab-land-min {
+      @media only screen and (min-width: 75em) {
+        @content;
+      } //min 1200px
+    }
+    @if $breakpoint == tab-note {
+      @media only screen and (max-width: 1500px) {
+        @content;
+      } //1500px
+    }
+    @if $breakpoint == tab-text {
+      @media only screen and (max-width: 1400px) {
+        @content;
+      } //1400px
+    }
+    @if $breakpoint == tab-text-min {
+      @media only screen and (max-width: 1400px) {
+        @content;
+      } //min 1400px
+    }
+    
+    @if $breakpoint == big-desktop {
+      @media only screen and (min-width: 112.5em) {
+        @content;
+      } //1800
+    }
+  }
+  
+  @mixin openNavbar($width) {
+    @if $width <= 0px {
+      .container-content {
+        min-width: 60px !important;
+        width: calc(100% - 100px) !important;
+        left: 100px !important;
+        background-color: orange !important;
+      }
+      
+    }
+    @if $width > 0px {
+      .container-content {
+        width: calc(100% - 310px) !important;
+        left: 310px !important;
+        background-color: orange;
+      }
+    }
+  }
