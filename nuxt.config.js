@@ -1,6 +1,6 @@
 export default {
   server: {
-    host: "0.0.0.0", // default: localhost
+    // host: "0.0.0.0", // default: localhost
     // hostname: "quest.localhost",
     port: 2455, // default: 3000
   },

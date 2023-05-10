@@ -29,13 +29,51 @@ const { query } = require("express");
 const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
-  password: "123456789",
-  database: "rehearsal",
+  password: "12345678",
+  database: "mydata",
 });
 //End code sql
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//-------------------------------------------------------------------------//
+// myJOP
+
+//function login
+app.post("/login", jsonParser, function (req, res, next) {
+  var sql = "SELECT * FROM users WHERE users_name = ?";
+  connection.execute(sql, [req.body.users_name], function (err, users, fields) {
+    if (err) {
+      res.json({ status: "error", message: "err" });
+      return;
+    }
+    if (users.length == 0) {
+      res.json({ status: "error", message: "no user foud" });
+      return;
+    }
+    bcrypt.compare(function (err, fields) {
+      if (req.body.password == users[0].password) {
+        var token = jwt.sign({ email: users[0].users_name }, "From-login", {
+          expiresIn: "4h",
+        });
+        res.json({
+          status: "ok",
+          message: "Login Sucsess",
+          user_id: users[0].user_id,
+          token,
+        });
+      } else {
+        res.json({ status: false, message: "Login False", err });
+      }
+    });
+  });
+});
+
+//function login
+
+
+
+//-------------------------------------------------------------------------//
 //function
 //function register
 app.post("/register", jsonParser, function (req, res, next) {
@@ -131,34 +169,34 @@ app.delete("/delete_user", jsonParser, function (req, res, next) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //function login
-app.post("/login", jsonParser, function (req, res, next) {
-  var sql = "SELECT * FROM users WHERE users_name = ?";
-  connection.execute(sql, [req.body.users_name], function (err, users, fields) {
-    if (err) {
-      res.json({ status: "error", message: "err" });
-      return;
-    }
-    if (users.length == 0) {
-      res.json({ status: "error", message: "no user foud" });
-      return;
-    }
-    bcrypt.compare(function (err, fields) {
-      if (req.body.password == users[0].password) {
-        var token = jwt.sign({ email: users[0].users_name }, "From-login", {
-          expiresIn: "4h",
-        });
-        res.json({
-          status: "ok",
-          message: "Login Sucsess",
-          user_id: users[0].user_id,
-          token,
-        });
-      } else {
-        res.json({ status: false, message: "Login False", err });
-      }
-    });
-  });
-});
+// app.post("/login", jsonParser, function (req, res, next) {
+//   var sql = "SELECT * FROM users WHERE users_name = ?";
+//   connection.execute(sql, [req.body.users_name], function (err, users, fields) {
+//     if (err) {
+//       res.json({ status: "error", message: "err" });
+//       return;
+//     }
+//     if (users.length == 0) {
+//       res.json({ status: "error", message: "no user foud" });
+//       return;
+//     }
+//     bcrypt.compare(function (err, fields) {
+//       if (req.body.password == users[0].password) {
+//         var token = jwt.sign({ email: users[0].users_name }, "From-login", {
+//           expiresIn: "4h",
+//         });
+//         res.json({
+//           status: "ok",
+//           message: "Login Sucsess",
+//           user_id: users[0].user_id,
+//           token,
+//         });
+//       } else {
+//         res.json({ status: false, message: "Login False", err });
+//       }
+//     });
+//   });
+// });
 
 //function login
 
