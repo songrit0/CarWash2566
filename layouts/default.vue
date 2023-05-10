@@ -112,7 +112,7 @@ export default ({
 	data() {
 		return {
 			MenuDropdown: false,
-			get_acessTokens: '',
+			get_acessTokens: false,
 			getIndex: '',
 			statusON: 'x',
 			QRon: false,
@@ -136,7 +136,7 @@ export default ({
 			localStorage.removeItem('acessToken')
 			localStorage.removeItem('users_id')
 			this.$store.commit('steUSER', null)
-			// window.location.replace(`/login0`)
+			window.location.replace(`/login0`)
 		},
 		increment() {
 			this.$store.commit('increment')
@@ -185,6 +185,9 @@ export default ({
 				// console.log('status "รอตอบรับ":', status);
 				// console.log(1);
 			})
+		},
+		get_login(){
+			
 		}
 
 
@@ -192,9 +195,12 @@ export default ({
 	mounted() {
 		this.setUSER()
 		this.get_state()
+		this.get_login()
 		setInterval(() => {
 			this.getIndex = this.$route.query.Index
-		}, 10);
+			
+		
+		}, 1000);
 		setInterval(() => {
 			this.get_state()
 		}, 60000);
@@ -204,6 +210,8 @@ export default ({
 				this.get_state()
 			}
 			// console.log(2);
+
+			
 		}, 10000);
 
 
@@ -216,7 +224,28 @@ export default ({
 				this.get_acessTokens = false
 			}
 
-
+			if (this.get_acessTokens) {
+				// console.log(this.get_acessTokens);
+				if (this.$router.currentRoute.path === '/login0') {
+					// console.log("no1");
+					// console.log("yes1");
+					window.location.replace(`/`)
+				} else {
+					// console.log("no2");
+					// console.log("yes2");
+				}
+			} else {
+				// window.location.replace(`/login0`)
+				if (this.$router.currentRoute.path === '/login0') {
+					// console.log("no1");
+				} else {
+					// console.log("no2");
+					window.location.replace(`/login0`)
+				}
+				
+				// console.log(this.$route.query.page);
+				console.log();
+			}
 
 		}, 1000);
 		this.URL = window.origin

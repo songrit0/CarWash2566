@@ -72,6 +72,61 @@ app.post("/login", jsonParser, function (req, res, next) {
 //function login
 
 
+app.post("/car_wash_list", jsonParser, function (req, res, next) {
+  connection.query(
+    "INSERT INTO `car_wash_list` (user_id,CWL_product,CWL_price,CWL_quantity,CWL_total_price) VALUES (?,?,?,?,?)",
+    [req.body.user_id,req.body.CWL_product, req.body.CWL_price, req.body.CWL_quantity, req.body.CWL_total_price],
+    function (err, results, fields) {
+      if (err) {
+        res.json({ status: false, message: err });
+        // console.log(results);
+        return;
+      }
+      res.json({ status: true });
+    }
+  );
+});
+
+
+app.get("/car_wash_list", jsonParser, function (req, res, next) {
+  var id = req.query.id;
+  // console.log(id);
+  connection.query(`SELECT * FROM car_wash_list WHERE user_id = ${id}`, function (err, results, fields) {
+    if (results) {
+      res.json({ status: true, results });
+    } else {
+      res.json({ status: false, message: err });
+      return;
+    }
+  });
+});
+app.delete("/delete_car_wash_list", jsonParser, function (req, res, next) {
+  var id = req.query.id;
+  connection.query(
+    `DELETE FROM car_wash_list WHERE CWL_ID = ${id}`,
+    function (err, results, fields) {
+      if (err) {
+        res.json({ status: "error", message: err });
+        return;
+      }
+      res.json({
+        status: "ok",
+        results: "Deleteted Sucsess!!",
+      });
+    }
+  );
+});
+app.get("/pro_item", jsonParser, function (req, res, next) {
+  connection.query("SELECT * FROM pro_item  ", function (err, results, fields) {
+    if (results) {
+      res.json({ status: true, results });
+    } else {
+      res.json({ status: false, message: err });
+      return;
+    }
+  });
+});
+
 
 //-------------------------------------------------------------------------//
 //function
@@ -126,6 +181,9 @@ app.put("/edit_user/:id", jsonParser, function (req, res, next) {
   });
 });
 //function edit_user
+
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

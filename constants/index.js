@@ -1,5 +1,5 @@
 // export const URL_IP = `http://118.175.29.251:5009`;
-export const URL_IP = `http://172.16.8.40:5009`;
+export const URL_IP = `http://127.0.0.1:5009`;
 export const URL_API = ``;
 //เข้าสู่ระบบ
 export const URL_PUST_LOGIN = `${URL_IP}/login`;

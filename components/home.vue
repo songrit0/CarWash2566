@@ -1,60 +1,60 @@
 <template>
   <div class="div-home">
     <div class="div-home-pages">
-      <h1>ระบบจัดการร้าน Car Care Service</h1>
+      <h1>ระบบจัดการร้าน Car Care Service <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <button type="button" class="btn btn-outline-primary">รอคิว [0]</button>
+        <button type="button" class="btn btn-outline-primary">รอชำระเงิน [0] </button>
+        <button type="button" class="btn btn-outline-primary">รับรถแล้ว [0] </button>
+      </div></h1>
+      
       <div class="div-home-row p-3 mb-2">
         <div class="item p-3 back-img-registerr">
           <!-- <div class="container"> -->
           <div class="row row-cols-2">
-            <div class="col p-2 item-img-01">
-              <div class="">img</div>
-              <button type="button" class="btn btn-primary">เลือก</button>
-            </div>
-            <div class="col p-2 item-img-01">
-              <div class="">img</div>
-              <button type="button" class="btn btn-primary">เลือก</button>
-            </div>
-            <div class="col p-2 item-img-01">
-              <div class="">img</div>
-              <button type="button" class="btn btn-primary">เลือก</button>
-            </div>
-            <div class="col p-2 item-img-01">
-              <div class="">img</div>
-              <button type="button" class="btn btn-primary">เลือก</button>
-            </div>
-            <div class="col p-2 item-img-01">
-              <div class="">img</div>
-              <button type="button" class="btn btn-primary">เลือก</button>
-            </div>
-            <div class="col p-2 item-img-01">
-              <div class="">img</div>
-              <button type="button" class="btn btn-primary">เลือก</button>
+         
+            <div
+              class="col p-2 item-img-01"
+              v-for="(item, idex) in por_item"
+              :key="idex"
+            >
+              <img src="https://i.pinimg.com/564x/0c/53/87/0c53874936e3bef1402859857e021c68.jpg" width="60" alt="">
+              <div class="">{{ item.Pro_name }}</div>
+              <button
+                style="width: 100%; height: 50px"
+                type="button"
+                class="btn btn-primary"
+                @click="clickaddcar(item) ;"
+              >
+                เลือก {{ item.Pro_price }}
+                <p style="font-size: 10px; color: white">บาท</p>
+              </button>
             </div>
           </div>
           <!-- </div> -->
         </div>
         <div class="item p-3 back-img-register container">
           <div class="column">
-            <p>รายการล้างรถ {{ get }}</p>
+            <p>รายการล้างรถ {{ get }} : {{$store.state.newUSER.user_id}}</p>
             <div class="">
+             
               <table class="table table-striped">
                 <tr>
-					<th>ON.</th>
-					<th>สินค้า</th>
-					<th>ราคา</th>
-					<th>จำนวน</th>
-					<th>รวม</th>
-					<th>ลบ</th>
-				  </tr>
-				  <tr>
-					<td>A01</td>
-					<td>Maria</td>
-					<td>200$</td>
-					<td>2</td>
-					<td>400$</td>
-					<td><a href="" style=" color: red">ลบ</a></td>
-				  </tr>
-				
+                  <th>ON.</th>
+                  <th>สินค้า</th>
+                  <th>ราคา</th>
+                  <th>จำนวน</th>
+                  <th>รวม</th>
+                  <th>ลบ</th>
+                </tr>
+                <tr v-for="(item, idex) in car_wash_list"
+                :key="idex">
+                  <td>{{item.CWL_ID}}</td>
+                  <td>{{item.CWL_product}}</td>
+                  <td>{{item.CWL_price}}$</td>
+                  <td>{{item.CWL_quantity}}</td>
+                  <td>{{item.CWL_total_price}}$</td>
+                  <td><a  style="color: red" @click="clickdelete(item.CWL_ID)">ลบ</a></td>
+                </tr>
               </table>
             </div>
           </div>
@@ -66,15 +66,86 @@
 </template>
 
 <script>
+import axios from "axios";
+import { URL_GET_REQ, URL_IP } from "../constants";
+import moment from 'moment'
+import Vue from 'vue';
+import Swal from 'sweetalert2';
+
+
+Vue.prototype.moment = moment
 export default {
   data() {
     return {
       get: "1/1/2000",
       USER_STAUS: this.$store.state.newUSER?.user_status,
+      por_item: "",
+      car_wash_list:""
     };
   },
-  methods: {},
-  mounted() {},
+
+  methods: {
+    GETpor_item() {
+      axios.get(`${URL_IP}/pro_item`).then((response) => {
+        this.por_item = response.data.results;
+        // console.log(response.data.results);
+      });
+    }, 
+    GETcar_wash_list() {
+      axios.get(`${URL_IP}/car_wash_list?id=${this.$store.state.newUSER.user_id}`).then((response) => {
+        this.car_wash_list = response.data.results;
+        // console.log(response.data.results);
+      });
+    },
+    GETdate(){
+      var get = new Date();
+      this.get = moment().format("Do MMM YY"); 
+      
+    },
+    clickdelete(id){
+      axios.delete(`${URL_IP}/delete_car_wash_list?id=${id}`)
+      setInterval(() => {
+        this.GETcar_wash_list()
+      }, 100);
+      
+    },
+    clickaddcar(item){
+      this.GETcar_wash_list()
+      axios.post(`${URL_IP}/car_wash_list`, {
+        user_id: this.$store.state.newUSER.user_id,
+        CWL_product: item.Pro_name,
+        CWL_price: item.Pro_price,
+        CWL_quantity: 3 ,
+        CWL_total_price:  3*item.Pro_price ,
+				}).then(response => {
+          
+					if (response.data.status === "ok") {
+						Swal.fire({
+							position: "center",
+							icon: "success",
+							title: "สมัครสมาชิกสำเร็จ",
+							showConfirmButton: false,
+							timer: 1500
+						}).then(() => {
+							
+						});
+					}
+					if (response.data.status === "error") {
+						alert("error");
+					}
+					if (response.data.status === "err") {
+						alert("err");
+					}
+				}).catch(function (error) {
+					console.log(error);
+				});
+    }
+  },
+  mounted() {
+    this.GETpor_item();
+    this.GETdate();
+    this.GETcar_wash_list();
+  },
   watch: {},
 };
 </script>
@@ -86,7 +157,7 @@ export default {
   flex-wrap: nowrap;
   align-items: center;
   height: 150px;
-  width: 90px;
+  width: 190px;
   justify-content: space-between;
 }
 .div-home {
