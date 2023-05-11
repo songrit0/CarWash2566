@@ -1,128 +1,101 @@
 <template>
   <div class="div-home">
     <div class="div-home-pages">
-      <h1>
-        ระบบจัดการร้าน Car Care Service
-        <div class="btn-group" role="group" aria-label="Basic outlined example">
-          <button type="button" class="btn btn-outline-primary">
-            รอคิว [0]
-          </button>
-          <button type="button" class="btn btn-outline-primary">
-            รอชำระเงิน [0]
-          </button>
-          <button type="button" class="btn btn-outline-primary">
-            รับรถแล้ว [0]
-          </button>
-        </div>
-      </h1>
+      <h1>กรอกรายละเอียดสินค้า</h1>
 
-      <div class="div-home-row p-3 mb-2">
-        <div class="item p-3 back-img-registerr">
-          <!-- <div class="container"> -->
-          <div class="row row-cols-2">
-            <div
-              class="col p-2 item-img-01"
-              v-for="(item, idex) in por_item"
-              :key="idex"
-            >
-              <img
-                src="https://i.pinimg.com/564x/0c/53/87/0c53874936e3bef1402859857e021c68.jpg"
-                width="60"
-                alt=""
-              />
-              <div class="">{{ item.Pro_name }}</div>
-              <button
-                v-if="car_wash_list_length <= 0"
-                style="width: 100%; height: 50px"
-                type="button"
-                class="btn btn-primary"
-                @click="clickaddcar(item)"
-              >
-                เลือก {{ item.Pro_price }}
-                <p style="font-size: 10px; color: white">บาท</p>
-              </button>
-              <button
-                disabled
-                v-if="!car_wash_list_length <= 0"
-                style="width: 100%; height: 50px"
-                type="button"
-                class="btn btn-danger"
-              >
-                เลือก {{ item.Pro_price }}
-                <p style="font-size: 10px; color: white">บาท</p>
-              </button>
+      <div class="div-home-row2 p-3 mb-2">
+        <div class="container" style="width: 100%">
+          <div class="row g-2">
+            <div class="col-12">
+              <form>
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label">ชื่อผู้ลูกค้า</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" />
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label">ทะเบียนรถ</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" />
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label">เบอร์โทร</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" />
+                  </div>
+                </div>
+              </form>
             </div>
-          </div>
-          <!-- </div> -->
-        </div>
-        <div class="item p-3 back-img-register container">
-          <div class="column">
-            <p>รายการล้างรถ {{ get }} : {{ car_wash_list_length }}</p>
-            <div class="">
-              <table class="table table-striped">
-                <tr>
-                  <th>ON.</th>
-                  <th>สินค้า</th>
-                  <th>ราคา</th>
-                  <th>จำนวน</th>
-                  <th>รวม</th>
-                  <th>ลบ</th>
-                </tr>
-                <tr v-for="(item, idex) in car_wash_list" :key="idex">
-                  <td>{{ item.CWL_ID }}</td>
-                  <td>{{ item.CWL_product }}</td>
-                  <td>{{ item.CWL_price }}$</td>
-                  <td>{{ item.CWL_quantity }}</td>
-                  <td>{{ item.CWL_total_price }}$</td>
-                  <td>
-                    <a style="color: red" @click="clickdelete(item.CWL_ID)"
-                      >ลบ</a
-                    >
-                  </td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </table>
-            </div>
-            <div
-              v-if="car_wash_list"
-              class="btn-group"
-              role="group"
-              aria-label="Basic outlined example column"
-              style="width: 100%"
-            >
-              <button
-                type="button"
-                class="btn btn-outline-primary col-4"
-                @click="clickdeleteAll()"
+            <div class="col-12">
+              <div class="p-3 border bg-light">
+                <div class="column">
+                  <p>รายการล้างรถ {{ get }} : {{ car_wash_list_length }}</p>
+                  <div class="">
+                    <table class="table table-striped">
+                      <tr>
+                        <th>ON.</th>
+                        <th>สินค้า</th>
+                        <th>ราคา</th>
+                        <th>จำนวน</th>
+                        <th>รวม</th>
+                      </tr>
+                      <tr v-for="(item, idex) in car_wash_list" :key="idex">
+                        <td>{{ item.CWL_ID }}</td>
+                        <td>{{ item.CWL_product }}</td>
+                        <td>{{ item.CWL_price }}$</td>
+                        <td>{{ item.CWL_quantity }}</td>
+                        <td>{{ item.CWL_total_price }}$</td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div
+                v-if="car_wash_list"
+                class="btn-group"
+                role="group"
+                aria-label="Basic outlined example column"
+                style="width: 100%"
               >
-                ลบทั้งหมด
-              </button>
-              <button
-                type="button"
-                class="btn btn-outline-primary col-4"
-                style="
-                  color: white;
-                  border-top: 1px solid #ffffff;
-                  border-bottom: 1px solid #ffffff;
-                "
-                disabled
-              >
-                ....
-              </button>
-              <button
-                type="button"
-                class="btn btn-outline-primary col-4"
-                @click="go()"
-              >
-                ทำรายการ
-              </button>
+                <button
+                  disabled
+                  type="button"
+                  class="btn btn-outline-primary col-4"
+                  style="
+                    color: white;
+                    border-top: 1px solid #ffffff;
+                    border-bottom: 1px solid #ffffff;
+                  "
+                >
+                  ....
+                </button>
+                <button type="button" class="btn btn-outline-primary col-4">
+                  ทำรายการ
+                </button>
+                <button
+                  disabled
+                  type="button"
+                  class="btn btn-outline-primary col-4"
+                  style="
+                    color: white;
+                    border-top: 1px solid #ffffff;
+                    border-bottom: 1px solid #ffffff;
+                  "
+                >
+                  ....
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -131,8 +104,8 @@
     </div>
   </div>
 </template>
-
-<script>
+  
+  <script>
 import axios from "axios";
 import { URL_GET_REQ, URL_IP } from "../constants";
 import moment from "moment";
@@ -148,13 +121,20 @@ export default {
       por_item: "",
       car_wash_list: "",
       car_wash_list_length: 0,
+      form_car: {
+        SC_service_name: "",
+        user_id: "",
+        SC_status: "",
+        SC_username: "",
+        SC_vehicle_registration: "",
+        SC_phone: "",
+        SC_Date: "",
+        SC_price: "",
+      },
     };
   },
 
   methods: {
-    go() {
-      window.location.replace(`/addcar`);
-    },
     GETpor_item() {
       axios.get(`${URL_IP}/pro_item`).then((response) => {
         this.por_item = response.data.results;
@@ -236,8 +216,8 @@ export default {
   watch: {},
 };
 </script>
-
-<style>
+  
+  <style>
 .item-img-01 {
   display: flex;
   flex-direction: column;
@@ -263,22 +243,22 @@ export default {
   width: 95%;
 }
 
-.div-home-row {
+.div-home-row2 {
   display: grid;
   grid-column-gap: 20px;
   column-gap: 20px;
   grid-row-gap: 20px;
   row-gap: 20px;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr;
 }
 
-.div-home-row .item {
+.div-home-row2 .item {
   width: 100%;
   height: 185px;
   border-radius: 12px;
 }
 
-.div-home-row-User {
+.div-home-row2-User {
   display: grid;
   grid-column-gap: 20px;
   column-gap: 20px;
@@ -287,7 +267,7 @@ export default {
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
-.div-home-row-User .item-User {
+.div-home-row2-User .item-User {
   width: 100%;
   height: 185px;
   border-radius: 12px;
@@ -384,16 +364,16 @@ export default {
   }
 
   @media screen and (max-width: 700px) {
-    .div-home-row-User {
+    .div-home-row2-User {
       grid-template-columns: 1fr 1fr 1fr;
     }
 
     @media screen and (max-width: 500px) {
-      .div-home-row-User {
+      .div-home-row2-User {
         grid-template-columns: 1fr 1fr;
       }
 
-      .div-home-row {
+      .div-home-row2 {
         grid-template-columns: 1fr;
       }
     }
