@@ -2,6 +2,7 @@
 	<div class="">
 		<!-- <login @click="GET()" style="position: fixed; z-index: 5; width: 100%; height: 100%; top: 0px;" v-if="!gets"/> -->
 		<home />
+		
 		<!-- <RepairP01 /> -->
 		<!-- <Tutorial/> -->
 		<!-- <h2 style="color:white ;">API NEWS</h2>

@@ -1,22 +1,41 @@
 <template>
   <div class="div-home">
     <div class="div-home-pages">
-      <h1>
-        ระบบจัดการร้าน Car Care Service
-        <div class="btn-group" role="group" aria-label="Basic outlined example">
-          <button type="button" class="btn btn-outline-primary">
+      <h1 class="row">
+        <p class="col-6">ระบบจัดการร้าน Car Care Service</p>
+        <div
+          class="form-check form-switch col"
+          style="font-size: 20px;display: flex;align-items: center;"
+        >
+          <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            id="flexSwitchCheckDefault"
+            v-model="Car_Care_ON"
+          />
+          <label class="form-check-label" 
+            > เปิด ดูข้อมูล</label
+          >
+        </div>
+        <div
+          class="btn-group col-4"
+          role="group"
+          aria-label="Basic outlined example"
+        >
+          <button type="button" class="btn btn-outline-primary" disabled>
             รอคิว [0]
           </button>
-          <button type="button" class="btn btn-outline-primary">
+          <button type="button" class="btn btn-outline-primary" disabled>
             รอชำระเงิน [0]
           </button>
-          <button type="button" class="btn btn-outline-primary">
+          <button type="button" class="btn btn-outline-primary" disabled>
             รับรถแล้ว [0]
           </button>
         </div>
       </h1>
-
-      <div class="div-home-row p-3 mb-2">
+      <status v-if="Car_Care_ON" />
+      <div class="div-home-row p-3 mb-2" v-if="!Car_Care_ON">
         <div class="item p-3 back-img-registerr">
           <!-- <div class="container"> -->
           <div class="row row-cols-2">
@@ -108,8 +127,7 @@
                 type="button"
                 class="btn btn-outline-primary col-4"
                 style="
-                  color: white;
-                  border-top: 1px solid #ffffff;
+                  color: white;border-top: 1px solid #ffffff;
                   border-bottom: 1px solid #ffffff;
                 "
                 disabled
@@ -138,9 +156,11 @@ import { URL_GET_REQ, URL_IP } from "../constants";
 import moment from "moment";
 import Vue from "vue";
 import Swal from "sweetalert2";
+import Status from "../components/Status.vue";
 
 Vue.prototype.moment = moment;
 export default {
+  components: { Status },
   data() {
     return {
       get: "1/1/2000",
@@ -148,6 +168,7 @@ export default {
       por_item: "",
       car_wash_list: "",
       car_wash_list_length: 0,
+      Car_Care_ON: false,
     };
   },
 
@@ -167,7 +188,7 @@ export default {
         .then((response) => {
           this.car_wash_list = response.data.results;
           // console.log(response.data.results);
-          this.car_wash_list_length = response.data.results.length;
+          // this.car_wash_list_length = response.data.results.length;
         });
     },
     GETdate() {

@@ -11,19 +11,31 @@
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">ชื่อผู้ลูกค้า</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="form_car.SC_username"
+                    />
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">ทะเบียนรถ</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="form_car.SC_vehicle_registration"
+                    />
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">เบอร์โทร</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="form_car.SC_phone"
+                    />
                   </div>
                 </div>
               </form>
@@ -31,7 +43,7 @@
             <div class="col-12">
               <div class="p-3 border bg-light">
                 <div class="column">
-                  <p>รายการล้างรถ {{ get }} : {{ car_wash_list_length }}</p>
+                  <p>รายการล้างรถ</p>
                   <div class="">
                     <table class="table table-striped">
                       <tr>
@@ -80,7 +92,11 @@
                 >
                   ....
                 </button>
-                <button type="button" class="btn btn-outline-primary col-4">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary col-4"
+                  @click="clickaddcar()"
+                >
                   ทำรายการ
                 </button>
                 <button
@@ -116,98 +132,97 @@ Vue.prototype.moment = moment;
 export default {
   data() {
     return {
-      get: "1/1/2000",
       USER_STAUS: this.$store.state.newUSER?.user_status,
       por_item: "",
       car_wash_list: "",
       car_wash_list_length: 0,
       form_car: {
-        SC_service_name: "",
-        user_id: "",
-        SC_status: "",
+        // SC_service_name: "",
+        // user_id: "",
+        // SC_status: "",
         SC_username: "",
         SC_vehicle_registration: "",
         SC_phone: "",
-        SC_Date: "",
-        SC_price: "",
+        // SC_Date: "",
+        // SC_price: "",
       },
     };
   },
 
   methods: {
-    GETpor_item() {
-      axios.get(`${URL_IP}/pro_item`).then((response) => {
-        this.por_item = response.data.results;
-        // console.log(response.data.results);
-      });
+    clickaddcar(item) {
+      var data2 = new Date();
+      if (this.form_car.SC_phone) {
+        if (this.form_car.SC_username) {
+          if (this.form_car.SC_vehicle_registration) {
+            axios
+              .post(`${URL_IP}/addcar`, {
+                SC_service_name: this.car_wash_list[0].CWL_ID,
+                user_id: this.$store.state.newUSER.user_id,
+                SC_status: "รอคิว",
+                SC_username: this.form_car.SC_username,
+                SC_vehicle_registration: this.form_car.SC_vehicle_registration,
+                SC_phone: this.form_car.SC_phone,
+                SC_Date: data2,
+                SC_price: this.car_wash_list[0].CWL_total_price,
+              })
+              .then((response) => {
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                  },
+                });
+
+                setTimeout(() => {
+                  axios.delete(
+                    `${URL_IP}/delete_car_wash_list_user_id?id=${this.$store.state.newUSER.user_id}`
+                  );
+                }, 1000);
+
+                Toast.fire({
+                  icon: "success",
+                  title: "Signed in successfully",
+                });
+                if (response.data.status === "true") {
+                }
+                if (response.data.status === "error") {
+                  alert("error");
+                }
+                if (response.data.status === "err") {
+                  alert("err");
+                }
+              })
+              .catch(function (error) {});
+          }
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "มีข้อมูลยังไม่ได้กรอก",
+          text: "หรือมีบางอย่างผิดพลาด!",
+        });
+      }
     },
     GETcar_wash_list() {
       axios
         .get(`${URL_IP}/car_wash_list?id=${this.$store.state.newUSER.user_id}`)
         .then((response) => {
-          this.car_wash_list = response.data.results;
-          // console.log(response.data.results);
-          this.car_wash_list_length = response.data.results.length;
-        });
-    },
-    GETdate() {
-      var get = new Date();
-      this.get = moment().format("Do MMM YY");
-    },
-    clickdelete(id) {
-      axios.delete(`${URL_IP}/delete_car_wash_list?id=${id}`);
-      setTimeout(() => {
-        this.GETcar_wash_list();
-      }, 100);
-    },
-    clickdeleteAll(id) {
-      axios.delete(
-        `${URL_IP}/delete_car_wash_list_user_id?id=${this.$store.state.newUSER.user_id}`
-      );
-      setTimeout(() => {
-        this.GETcar_wash_list();
-        setTimeout(() => {
-          this.car_wash_list = "";
-        }, 100);
-      }, 100);
-    },
-    clickaddcar(item) {
-      setTimeout(() => {
-        this.GETcar_wash_list();
-      }, 10);
-      axios
-        .post(`${URL_IP}/car_wash_list`, {
-          user_id: this.$store.state.newUSER.user_id,
-          CWL_product: item.Pro_name,
-          CWL_price: item.Pro_price,
-          CWL_quantity: 3,
-          CWL_total_price: 3 * item.Pro_price,
-        })
-        .then((response) => {
-          if (response.data.status === "ok") {
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "สมัครสมาชิกสำเร็จ",
-              showConfirmButton: false,
-              timer: 1500,
-            }).then(() => {});
-          }
-          if (response.data.status === "error") {
-            alert("error");
-          }
-          if (response.data.status === "err") {
-            alert("err");
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
+          setTimeout(() => {
+            this.car_wash_list = response.data.results;
+          }, 100);
+
+          //   console.log(response.data.results);
+          //   this.car_wash_list_length = response.data.results.length;
         });
     },
   },
   mounted() {
-    this.GETpor_item();
-    this.GETdate();
     this.GETcar_wash_list();
     setInterval(() => {
       this.GETcar_wash_list();

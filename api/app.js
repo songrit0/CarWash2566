@@ -95,8 +95,7 @@ app.post("/car_wash_list", jsonParser, function (req, res, next) {
 app.post("/addcar", jsonParser, function (req, res, next) {
   connection.query(
     "INSERT INTO `status_car` (SC_service_name,user_id,SC_status,SC_username,SC_vehicle_registration,SC_phone,SC_Date,SC_price) VALUES (?,?,?,?,?,?,?,?)",
-      // ,,,,,,, ?,?,?,?,?,?,?
-      
+
     [
       req.body.SC_service_name,
       req.body.user_id,
@@ -173,6 +172,43 @@ app.get("/pro_item", jsonParser, function (req, res, next) {
   connection.query("SELECT * FROM pro_item  ", function (err, results, fields) {
     if (results) {
       res.json({ status: true, results });
+    } else {
+      res.json({ status: false, message: err });
+      return;
+    }
+  });
+});
+
+app.get("/Get_all_status_car", jsonParser, function (req, res, next) {
+  var stauss = req.query.staus;
+  var id = parseInt(req.query.user_id);
+  console.log(stauss);
+  console.log(id);
+  if (stauss) {
+    if (!id) {
+      var sql = `SELECT * FROM status_car WHERE SC_status = "${stauss}"`;
+    } else {
+      var sql = `SELECT * FROM status_car WHERE (SC_status = '${stauss}' AND user_id = '${id}')  `;
+    }
+  } else {
+    var reeor = "ไม่พบข้อมูล";
+  }
+
+  if (stauss === "ทั้งหมด") {
+    if (!id) {
+      var sql = `SELECT * FROM status_car`;
+    } else {
+      var sql = `SELECT * FROM status_car WHERE user_id = ${id}`;
+    }
+  } else {
+    var reeor = "ไม่พบข้อมูล";
+  }
+
+  connection.query(sql, function (err, results, fields) {
+    if (results) {
+      var lengthdata = results.length;
+      ////console.log(results);
+      res.status(200).json({ status: true, lengthdata: lengthdata, results });
     } else {
       res.json({ status: false, message: err });
       return;
