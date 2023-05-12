@@ -79,8 +79,7 @@
             </thead>
           </table>
 
-          <a href="#" class="btn btn-primary my-2">Main call to action</a>
-          <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+      
         </div>
       </div>
     </section>

@@ -188,6 +188,26 @@ app.delete(
     );
   }
 );
+app.delete(
+  "/delete_pro_item",
+  jsonParser,
+  function (req, res, next) {
+    var id = req.query.id;
+    connection.query(
+      `DELETE FROM pro_item WHERE Pro_id = ${id}`,
+      function (err, results, fields) {
+        if (err) {
+          res.json({ status: "error", message: err });
+          return;
+        }
+        res.json({
+          status: "ok",
+          results: "Deleteted Sucsess!!",
+        });
+      }
+    );
+  }
+);
 app.get("/pro_item", jsonParser, function (req, res, next) {
   connection.query("SELECT * FROM pro_item  ", function (err, results, fields) {
     if (results) {
@@ -198,6 +218,47 @@ app.get("/pro_item", jsonParser, function (req, res, next) {
     }
   });
 });
+app.post("/add_pro_item", jsonParser, function (req, res, next) {
+  connection.query(
+    "INSERT INTO `pro_item` (Pro_name,Pro_price) VALUES (?,?)",
+    [
+      req.body.Pro_name,
+      req.body.Pro_price,
+     
+    ],
+    function (err, results, fields) {
+      if (err) {
+        res.json({ status: false, message: err });
+        // console.log(results);
+        return;
+      }
+      res.json({ status: true });
+    }
+  );
+});
+
+app.put("/edit_pro_item", jsonParser, function (req, res, next) {
+  let id = req.query.id;
+  
+  console.log(id);
+  var sql = `UPDATE pro_item SET ? WHERE Pro_id = ${id}`;
+  const data = {
+    Pro_name: req.body.Pro_name,
+    Pro_price: req.body.Pro_price,
+  };
+  connection.query(sql, [data], function (err, results, fields) {
+    if (err) {
+      res.json({ status: "error", message: err });
+      return;
+    }
+    res.json({
+      status: "ok",
+      results: " Updated Sucsess!!",
+    });
+  });
+});
+
+
 // Get_By_ID_status_car
 app.get("/Get_By_ID_status_car", jsonParser, function (req, res, next) {
   var id = req.query.id;

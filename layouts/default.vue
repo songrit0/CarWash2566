@@ -13,28 +13,16 @@
 
 			</div>
 			<div class="div-toggler" :style="set_state_on ? '' : 'left: -192px;'" v-if="$store.state?.newUSER?.user_status === 'admin'">
-				<li>เปิดการแจ้งเตือน :</li>
+				<!-- <li>เปิดการแจ้งเตือน :</li> -->
 				<div class="toggler">
-					<input id="toggler-1" name="toggler-1" type="checkbox" v-model="set_state">
-					<label for="toggler-1">
-						<svg class="toggler-on" version="1.1" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 130.2 130.2">
-							<polyline class="path check" points="100.2,40.2 51.5,88.8 29.8,67.5"></polyline>
-						</svg>
-						<svg class="toggler-off" version="1.1" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 130.2 130.2">
-							<line class="path line" x1="34.4" y1="34.4" x2="95.8" y2="95.8"></line>
-							<line class="path line" x1="95.8" y1="34.4" x2="34.4" y2="95.8"></line>
-						</svg>
-					</label>
+					<button @click="goAdmin_P()" type="button" class="btn btn-warning">ไปหน้าจัดการระบบ สำหรับแอดมิน</button>
 				</div>
 				<div class="div-toggler_BTN" @click="set_state_on = !set_state_on" 
 					:style="set_state ? 'background-color: rgb(77, 252, 156); color: #000000' : 'color:#fff'">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" :fill="set_state ? '#000000' : '#ffff'"
-						class="bi bi-bell" viewBox="0 0 16 16">
-						<path
-							d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z" />
-					</svg>{{ $store.state.statusON.lengthdata }}
+					
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffff" class="bi bi-sunglasses" viewBox="0 0 16 16">
+							<path d="M3 5a2 2 0 0 0-2 2v.5H.5a.5.5 0 0 0 0 1H1V9a2 2 0 0 0 2 2h1a3 3 0 0 0 3-3 1 1 0 1 1 2 0 3 3 0 0 0 3 3h1a2 2 0 0 0 2-2v-.5h.5a.5.5 0 0 0 0-1H15V7a2 2 0 0 0-2-2h-2a2 2 0 0 0-1.888 1.338A1.99 1.99 0 0 0 8 6a1.99 1.99 0 0 0-1.112.338A2 2 0 0 0 5 5H3zm0 1h.941c.264 0 .348.356.112.474l-.457.228a2 2 0 0 0-.894.894l-.228.457C2.356 8.289 2 8.205 2 7.94V7a1 1 0 0 1 1-1z"/>
+						  </svg>A
 				</div>
 			</div>
 			<div class="group-layouts">
@@ -129,6 +117,9 @@ export default ({
 		}
 	},
 	methods: {
+		goAdmin_P(){
+			window.location.replace(`/Admin`);
+		},
 		submitSearch() {
 			localStorage.setItem('acessToken', 'AA')
 		},
@@ -581,7 +572,7 @@ body::-webkit-scrollbar-thumb {
 
 .div-toggler {
 	display: flex;
-	background-color: rgba(170, 170, 170, 0.733);
+	background-color: rgb(255 193 7);
 	width: 210px;
 	height: 45px;
 	position: absolute;
@@ -608,8 +599,8 @@ body::-webkit-scrollbar-thumb {
 }
 
 .toggler {
-	width: 72px;
-	transform: scale(0.7, 0.7);
+	width: 100%;
+	transform: scale(0.9, 0.7);
 	/* margin: 40px auto; */
 }
 

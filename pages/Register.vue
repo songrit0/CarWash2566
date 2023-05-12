@@ -62,11 +62,11 @@
 			</div>
 			<hr width=80% size=3>
 		</div>
-		<div class="password_show">
+		<!-- <div class="password_show">
 			<input class="form-check-input mt-0" type="checkbox" v-model="show_User_List">
 			<li>แสดงรายการข้อมูลผู้ใช้งาน</li>
 
-		</div>
+		</div> -->
 
 		<!-- <User_List v-if="show_User_List" /> -->
 		<br>
@@ -148,7 +148,13 @@ export default {
 							showConfirmButton: false,
 							timer: 1500
 						}).then(() => {
-							window.location.replace(`/Register`);
+							this.form.user = "",
+							this.form.name= "",
+							this.form.phone= "",
+							this.form.password= "",
+							this.form.user_status= "user"
+							
+							// window.location.replace(`/Register`);
 						});
 					}
 					if (response.data.status === "error") {
