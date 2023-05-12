@@ -29,7 +29,7 @@ const { query } = require("express");
 const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
-  password: "12345678",
+  password: "",
   database: "mydata",
 });
 //End code sql
@@ -117,6 +117,26 @@ app.post("/addcar", jsonParser, function (req, res, next) {
   );
 });
 
+app.put("/edit_status_car", jsonParser, function (req, res, next) {
+  let id = req.query.id;
+  
+  console.log(id);
+  var sql = `UPDATE status_car SET ? WHERE SC_id = ${id}`;
+  const data = {
+    SC_status: req.body.SC_status,
+  };
+  connection.query(sql, [data], function (err, results, fields) {
+    if (err) {
+      res.json({ status: "error", message: err });
+      return;
+    }
+    res.json({
+      status: "ok",
+      results: " Updated Sucsess!!",
+    });
+  });
+});
+
 app.get("/car_wash_list", jsonParser, function (req, res, next) {
   var id = req.query.id;
   // console.log(id);
@@ -177,6 +197,23 @@ app.get("/pro_item", jsonParser, function (req, res, next) {
       return;
     }
   });
+});
+// Get_By_ID_status_car
+app.get("/Get_By_ID_status_car", jsonParser, function (req, res, next) {
+  var id = req.query.id;
+  // console.log(id);
+  connection.query(
+    `SELECT * FROM status_car WHERE SC_id = ${id}`,
+    function (err, results, fields) {
+      if (results) {
+     
+        res.json({ status: true, results});
+      } else {
+        res.json({ status: false, message: err });
+        return;
+      }
+    }
+  );
 });
 
 app.get("/Get_all_status_car", jsonParser, function (req, res, next) {

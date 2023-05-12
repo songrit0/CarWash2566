@@ -5,18 +5,15 @@
         <p class="col-6">ระบบจัดการร้าน Car Care Service</p>
         <div
           class="form-check form-switch col"
-          style="font-size: 20px;display: flex;align-items: center;"
+          style="font-size: 20px; display: flex; align-items: center"
         >
-          <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            id="flexSwitchCheckDefault"
-            v-model="Car_Care_ON"
-          />
-          <label class="form-check-label" 
-            > เปิด ดูข้อมูล</label
+          <button
+            type="button"
+            class="btn btn-success"
+            @click="goStatus_pages()"
           >
+            ไปหน้าข้อมูลการจองคิว
+          </button>
         </div>
         <div
           class="btn-group col-4"
@@ -127,7 +124,8 @@
                 type="button"
                 class="btn btn-outline-primary col-4"
                 style="
-                  color: white;border-top: 1px solid #ffffff;
+                  color: white;
+                  border-top: 1px solid #ffffff;
                   border-bottom: 1px solid #ffffff;
                 "
                 disabled
@@ -173,6 +171,9 @@ export default {
   },
 
   methods: {
+    goStatus_pages() {
+      window.location.replace(`/Status_pages`);
+    },
     go() {
       window.location.replace(`/addcar`);
     },
