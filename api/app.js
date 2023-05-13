@@ -120,7 +120,7 @@ app.post("/addcar", jsonParser, function (req, res, next) {
 app.put("/edit_status_car", jsonParser, function (req, res, next) {
   let id = req.query.id;
   
-  console.log(id);
+  // console.log(id);
   var sql = `UPDATE status_car SET ? WHERE SC_id = ${id}`;
   const data = {
     SC_status: req.body.SC_status,
@@ -240,7 +240,7 @@ app.post("/add_pro_item", jsonParser, function (req, res, next) {
 app.put("/edit_pro_item", jsonParser, function (req, res, next) {
   let id = req.query.id;
   
-  console.log(id);
+  // console.log(id);
   var sql = `UPDATE pro_item SET ? WHERE Pro_id = ${id}`;
   const data = {
     Pro_name: req.body.Pro_name,
@@ -280,8 +280,8 @@ app.get("/Get_By_ID_status_car", jsonParser, function (req, res, next) {
 app.get("/Get_all_status_car", jsonParser, function (req, res, next) {
   var stauss = req.query.staus;
   var id = parseInt(req.query.user_id);
-  console.log(stauss);
-  console.log(id);
+  // console.log(stauss);
+  // console.log(id);
   if (stauss) {
     if (!id) {
       var sql = `SELECT * FROM status_car WHERE SC_status = "${stauss}"`;
@@ -306,7 +306,12 @@ app.get("/Get_all_status_car", jsonParser, function (req, res, next) {
     if (results) {
       var lengthdata = results.length;
       ////console.log(results);
-      res.status(200).json({ status: true, lengthdata: lengthdata, results });
+      if (lengthdata == 0) {
+        res.status(200).json({ status: true, lengthdata: lengthdata, 'results':{ SC_id : '0'} });
+      } else {
+        res.status(200).json({ status: true, lengthdata: lengthdata, results });
+      }
+      // res.status(200).json({ status: true, lengthdata: lengthdata, results });
     } else {
       res.json({ status: false, message: err });
       return;

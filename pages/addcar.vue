@@ -1,7 +1,7 @@
 <template>
   <div class="div-home">
     <div class="div-home-pages">
-      <h1>กรอกรายละเอียดสินค้า</h1>
+      <h1>กรอกรายละเอียดลูกค้า</h1>
 
       <div class="div-home-row2 p-3 mb-2">
         <div class="container" style="width: 100%">
@@ -157,7 +157,7 @@ export default {
           if (this.form_car.SC_vehicle_registration) {
             axios
               .post(`${URL_IP}/addcar`, {
-                SC_service_name: this.car_wash_list[0].CWL_ID,
+                SC_service_name: this.car_wash_list[0].CWL_product,
                 user_id: this.$store.state.newUSER.user_id,
                 SC_status: "รอคิว",
                 SC_username: this.form_car.SC_username,
@@ -167,6 +167,10 @@ export default {
                 SC_price: this.car_wash_list[0].CWL_total_price,
               })
               .then((response) => {
+                setTimeout(() => {
+                   this.$router.back(1)
+                }, 1000);
+               
                 const Toast = Swal.mixin({
                   toast: true,
                   position: "top-end",

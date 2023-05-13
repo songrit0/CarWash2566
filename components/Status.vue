@@ -190,6 +190,9 @@ export default {
   },
   mounted() {
     this.GETall_status_car();
+    setInterval(() => {
+      this.GETall_status_car()
+    }, 10000);
   },
   watch: {
     STAUS() {

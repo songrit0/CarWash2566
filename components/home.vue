@@ -15,20 +15,25 @@
             ไปหน้าข้อมูลการจองคิว
           </button>
         </div>
-        <div
+        <div v-if="all_status_caON"
           class="btn-group col-4"
           role="group"
           aria-label="Basic outlined example"
+          style="border: 2px solid #000000;
+            display: flex;
+            flex-direction: column;
+            border-radius: 15px;
+          "
         >
-          <button type="button" class="btn btn-outline-primary" disabled>
-            รอคิว [0]
-          </button>
-          <button type="button" class="btn btn-outline-primary" disabled>
-            รอชำระเงิน [0]
-          </button>
-          <button type="button" class="btn btn-outline-primary" disabled>
-            รับรถแล้ว [0]
-          </button>
+        
+          คิวปัจจุบัน [ {{ all_status_ca.SC_id }} ]
+          <p style="font-size: 20px">คิว ID ที่ :{{ all_status_ca.SC_id }}</p>
+          <p style="font-size: 20px">คุณ :{{ all_status_ca.SC_username }}</p>
+          <p style="font-size: 20px">
+            ทะเบียน :{{ all_status_ca.SC_vehicle_registration }}
+          </p>
+          <button type="button" class="btn btn-warning" style="border-radius: 15px 15px 0px 0px; width: 100%;" v-if="all_status_ca.user_id == $nuxt.$store.state.newUSER.user_id" disabled >คิวของคุณ</button>
+          
         </div>
       </h1>
       <status v-if="Car_Care_ON" />
@@ -107,7 +112,7 @@
               </table>
             </div>
             <div
-              v-if="car_wash_list"
+              v-if="!car_wash_list_length <= 0"
               class="btn-group"
               role="group"
               aria-label="Basic outlined example column"
@@ -167,10 +172,30 @@ export default {
       car_wash_list: "",
       car_wash_list_length: 0,
       Car_Care_ON: false,
+      all_status_caON:false,
+      all_status_ca:'',
     };
   },
 
   methods: {
+    getS() {
+      axios.get(`${URL_IP}/Get_all_status_car?staus=รอคิว`).then((response) => {
+        var data = response.data.results
+        var lengthdata =response.data.lengthdata
+        if (lengthdata == '0') {
+          this.all_status_ca = response.data.results
+          this.all_status_caON = false
+        }else {
+          setTimeout(() => {
+            this.all_status_ca = response.data.results[0];
+            this.all_status_caON = true
+          }, 100);
+        }
+
+        //   console.log(response.data.results);
+        //   this.car_wash_list_length = response.data.results.length;
+      });
+    },
     goStatus_pages() {
       window.location.replace(`/Status_pages`);
     },
@@ -189,7 +214,7 @@ export default {
         .then((response) => {
           this.car_wash_list = response.data.results;
           // console.log(response.data.results);
-          // this.car_wash_list_length = response.data.results.length;
+          this.car_wash_list_length = response.data.results.length;
         });
     },
     GETdate() {
@@ -222,8 +247,8 @@ export default {
           user_id: this.$store.state.newUSER.user_id,
           CWL_product: item.Pro_name,
           CWL_price: item.Pro_price,
-          CWL_quantity: 3,
-          CWL_total_price: 3 * item.Pro_price,
+          CWL_quantity: 1,
+          CWL_total_price: 1 * item.Pro_price,
         })
         .then((response) => {
           if (response.data.status === "ok") {
@@ -253,7 +278,8 @@ export default {
     this.GETcar_wash_list();
     setInterval(() => {
       this.GETcar_wash_list();
-    }, 100);
+      this.getS();
+    }, 1000);
   },
   watch: {},
 };

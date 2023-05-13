@@ -6,9 +6,9 @@
 			<!-- <qriously v-if="QRon" value="Hello World!" :size="200" /> -->
 			<div class="group-layouts" @click="$router.push({ path: '/', replace: true })">
 				<!-- <img class="logo-img" src="~/~/img/LogoMain.png" alt="" width="50px"> -->
-				<li class="item-layouts title-layouts" @click="setUSER()">ระบบแจ้งซ่อม
+				<li class="item-layouts title-layouts" @click="setUSER()">ระบบจัดการร้าน 
 					<!-- {{ getnewUSER }} -->
-				</li><label>Repair Notification System</label>
+				</li><label>Car Care Service</label>
 
 
 			</div>
@@ -142,30 +142,30 @@ export default ({
 
 		checkAlert() {
 
-			var USER_STAUS = this.$store.state?.newUSER?.user_status
-			if (USER_STAUS === 'admin') {
-				var audio = new Audio();
-				audio.src = "http://commondatastorage.googleapis.com/codeskulptor-assets/Collision8-Bit.ogg";
-				// audio.src = "https://media1.vocaroo.com/mp3/17RnRCYXCMRN";
-				audio.play();
-				const Toast = Swal.mixin({
-					toast: true,
-					position: 'top-end',
-					showConfirmButton: false,
-					timer: 10000,
-					timerProgressBar: true,
-					didOpen: (toast) => {
-						toast.addEventListener('mouseenter', Swal.stopTimer)
-						toast.addEventListener('mouseleave', Swal.resumeTimer)
-					}
-				})
-				Toast.fire({
-					icon: 'warning',
-					title: `มีการแจ้งซ่อม `,
-					text: `จำนวน ${this.$store.state.statusON.lengthdata} การแจ้งซ่อม`,
-				})
+			// var USER_STAUS = this.$store.state?.newUSER?.user_status
+			// if (USER_STAUS === 'admin') {
+			// 	var audio = new Audio();
+			// 	audio.src = "http://commondatastorage.googleapis.com/codeskulptor-assets/Collision8-Bit.ogg";
+			// 	// audio.src = "https://media1.vocaroo.com/mp3/17RnRCYXCMRN";
+			// 	audio.play();
+			// 	const Toast = Swal.mixin({
+			// 		toast: true,
+			// 		position: 'top-end',
+			// 		showConfirmButton: false,
+			// 		timer: 10000,
+			// 		timerProgressBar: true,
+			// 		didOpen: (toast) => {
+			// 			toast.addEventListener('mouseenter', Swal.stopTimer)
+			// 			toast.addEventListener('mouseleave', Swal.resumeTimer)
+			// 		}
+			// 	})
+			// 	Toast.fire({
+			// 		icon: 'warning',
+			// 		title: `มีการแจ้งซ่อม `,
+			// 		text: `จำนวน ${this.$store.state.statusON.lengthdata} การแจ้งซ่อม`,
+			// 	})
 
-			}
+			// }
 
 
 		},
