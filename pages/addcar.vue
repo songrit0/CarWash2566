@@ -97,7 +97,7 @@
                   class="btn btn-outline-primary col-4"
                   @click="clickaddcar()"
                 >
-                  ทำรายการ
+                  ตกลง
                 </button>
                 <button
                   disabled
