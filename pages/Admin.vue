@@ -62,14 +62,7 @@
             </a>
           </li>
 
-          <li>
-            <a :class="leitbar =='5' ? 'nav-link active':'nav-link text-white' " @click="ck(5)"
-              ><svg width="16" height="16" class="bi pe-none me-2">
-                <use xlink:href="#people-circle"></use>
-              </svg>
-              Customers
-            </a>
-          </li>
+        
         </ul>
         <hr style="color:#ffffff;"/>
 
